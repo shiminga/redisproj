@@ -4,7 +4,7 @@ server:
 spring:
   redis:
     timeout: 6000ms
-    password: 123456
+    password: '123456'
     cluster:
       max-redirects: 3  # 获取失败 最大重定向次数
       nodes:
@@ -20,3 +20,17 @@ spring:
         max-idle: 10 # 连接池中的最大空闲连接
         min-idle: 5 # 连接池中的最小空闲连接
         max-wait: 100ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+
+
+
+#以配置文件启动redis
+#docker run
+#-p 6379:6379  端口映射：前表示主机部分，：后表示容器部分
+#--name redis_6379   指定该容器名称，查看和进行操作都比较方便
+#-v /var/lib/docker/redis-cluster-d/redis/redis-6379/redis-6379.conf:/etc/redis/redis.conf     -v 挂载目录，规则与端口映射相同
+#-v /var/lib/docker/redis-cluster-d/redis/redis-6379/data:/data
+#-d  redis      -d redis 表示后台启动redis
+# redis-server /etc/redis/redis.conf   以配置文件启动redis，加载容器内的conf文件，最终找到的是挂载的目录
+
+#启动集群
+#redis-cli -a 123456  --cluster create 8.129.178.38:6379 8.129.178.38:6380 8.129.178.38:6381 8.129.178.38:6382 8.129.178.38:6383 8.129.178.38:6384 --cluster-replicas 1
