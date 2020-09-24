@@ -45,3 +45,8 @@ https://blog.csdn.net/w605283073/article/details/85106902
 <properties>下加
 
 <disable.checks>true</disable.checks>
+
+
+******************idea 终端用不了mvn命令***************************
+用户变量 Path添加如下  idea安装目录+\plugins\maven\lib\maven3\bin   
+*********************************************
