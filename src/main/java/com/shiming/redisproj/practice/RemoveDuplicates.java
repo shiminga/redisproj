@@ -4138,41 +4138,8 @@ public class RemoveDuplicates {
     public static void main(String[] args) throws Exception {
         quickSort(new int[]{3,5,9,3,4,10,3,5,6});
 
-
-        int divid=6;
-
-        String[]  personnel = {"陈鹏鹏","吴斌","田云云","熊宇杰","张晓娟","方卫江","祝肖","王思蒙","李少锋","陈波","程峰全","庄丹耀",
-                "石明","许宪坤","刘彭军","黄杰","余跞卿","庞碧娟","罗俊康","徐娜","林佳威","黄锦斌","蔡美钊","何康林"};
-        System.out.println(personnel.length);
-
-        List<String> stringList=new ArrayList<>();
-
-        for(int i=0;i<personnel.length;i++){
-            stringList.add(personnel[i]);
-        }
-
-        List<List<String>> res=new ArrayList<>();
-
-        int num=divid;
-        while(num-->0){
-            List<String> tmp=new ArrayList<>();
-            res.add(tmp);
-        }
-        int pos=0;
-        while(!stringList.isEmpty()){
-            List<String> empList=res.get(pos);
-
-            String empName=stringList.get(new Random().nextInt(stringList.size()));
-            empList.add(empName);
-            stringList.remove(empName);
-
-            pos=(pos==divid-1?0:(pos+1));
-        }
-
-
-        for(List<String> l:res){
-            System.out.println(l);
-        }
+        Son son=new Son();
+        son.b();
     }
 
     /**
@@ -4995,8 +4962,6 @@ class ZeroEvenOdd2 {
             }
         }
     }
-
-
 }
 
 class Son extends Parent {
@@ -5010,6 +4975,13 @@ class Parent{
     public String address;
 
     public final String nis="23e3";
+
+    public void a(){
+        System.out.println("调用");
+    }
+    public void b(){
+        this.a();
+    }
 }
 
 class Node {
