@@ -1,5 +1,5 @@
 server:
-  port: 2222
+  port: 3333
 
 spring:
   redis:
@@ -34,3 +34,24 @@ spring:
         initial-size: 5     #初始化提供的连接数
         max-total: 5          #最大的连接数
         max-wait-millis: 200        #等待连接获取的最大超时时间
+#调整端点的前缀路径为/
+
+  management:
+
+      endpoints:
+
+         web:
+
+            base-path: /
+
+# dubbo consumer config
+  dubbo:
+    application:
+      name: consumer-pd
+    registry:
+      address: zookeeper://8.129.178.38:2181,8.129.178.38:2182,8.129.178.38:2183
+    protocol:
+      name: dubbo
+      port: 20883
+    scan: com.consumer.controller
+
