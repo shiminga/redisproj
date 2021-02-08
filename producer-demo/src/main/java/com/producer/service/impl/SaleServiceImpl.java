@@ -25,9 +25,11 @@ public class SaleServiceImpl implements SaleService {
         List<Thread> threads=new LinkedList<>();
         for(int i=0;i<500;i++){
             threads.add(new Thread(()->{
-                int num=userDao.getGoodNum(1);
-                userDao.decrementWarehouse(--num);
-                System.out.println("****************"+num+"*****************");
+                synchronized (this){
+                    int num=userDao.getGoodNum(1);
+                    userDao.decrementWarehouse(--num);
+                    System.out.println("****************"+num+"*****************");
+                }
             }));
         }
 
