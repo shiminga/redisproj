@@ -2,6 +2,7 @@ package com.producer.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.api.service.SaleService;
+import com.producer.mapper.UserDao;
 import org.redisson.Redisson;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,9 +12,12 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     Redisson redisson;
 
+    @Autowired
+    UserDao userDao;
+
     @Override
     public int sale(int saleNum) {
-//        RedissonRedLock lock=redisson.
-        return 0;
+        userDao.decrementWarehouse(1);
+        return 1;
     }
 }

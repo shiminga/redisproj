@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.producer.mapper.UserDao">
+
+    <resultMap type="com.producer.entities.User" id="userData">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="address" column="address" />
+    </resultMap>
+
+    <select id="getUsers" resultMap="userData">
+        select * from user
+    </select>
+
+    <update id="decrementWarehouse" parameterType="java.lang.Integer">
+        update goods set num=num-#{decreNum} where id=1
+    </update>
+</mapper>

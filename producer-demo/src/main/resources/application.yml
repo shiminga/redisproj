@@ -25,7 +25,7 @@ spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://8.129.178.38:3306/redis_test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://8.129.178.38:3306/redis_test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai&useAffectedRows=true
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    filters: stat,wall,log4j     #druid监控配置
@@ -52,3 +52,6 @@ dubbo:
   monitor:
     protocol: registry
 
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.report.bi.entities
