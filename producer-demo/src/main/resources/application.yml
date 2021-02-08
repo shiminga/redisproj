@@ -36,18 +36,19 @@ spring:
         max-wait-millis: 200        #等待连接获取的最大超时时间
 
 # dubbo producer config
-  dubbo:
-    application:
-      name: producer-pd
-#    registry:
-#      address: zookeeper://8.129.178.38:2181,8.129.178.38:2182,8.129.178.38:2183
-      registries[0]:
-        address: zookeeper://8.129.178.38:2181
-      registries[1]:
-        address: zookeeper://8.129.178.38:2182
-      registries[2]:
-        address: zookeeper://8.129.178.38:2183
-    protocol:
-      name: dubbo
-      port: 20882
-    scan: com.producer.service
+dubbo:
+  application:
+    name: producer-pd
+  #注册中心
+  registry:
+    address: 8.129.178.38:2181,8.129.178.38:2182,8.129.178.38:2183
+    protocol: zookeeper
+  #rpc协议
+  protocol: dubbo
+  #rpc使用端口
+  port: 20882
+  scan: com.producer.service
+  #连接监控中心
+  monitor:
+    protocol: registry
+
