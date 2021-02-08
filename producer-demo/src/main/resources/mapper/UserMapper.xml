@@ -13,6 +13,10 @@
     </select>
 
     <update id="decrementWarehouse" parameterType="java.lang.Integer">
-        update goods set num=num-#{decreNum} where id=1
+        update goods set num=#{newNum} where id=1
     </update>
+
+    <select id="getGoodNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select num from goods where id=#{id}
+    </select>
 </mapper>

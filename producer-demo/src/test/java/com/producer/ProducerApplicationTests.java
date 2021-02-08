@@ -1,35 +1,27 @@
-package com.shiming.redisproj;
+package com.producer;
 
 import com.producer.mapper.UserDao;
 import org.junit.jupiter.api.Test;
-import org.redisson.Redisson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 class ProducerApplicationTests {
 
-//    @Autowired
-//    UserDao userDao;
+    @Autowired
+    UserDao userDao;
 //
     @Test
     void contextLoads() {
 
-        Student student=new Student();
-        student.setName("石明");
-        student.setAge(25);
-
-//        redisTemplate.opsForHash().put("shim","stu","hahahah");
-//
-//        Object o=redisTemplate.opsForHash().get("shim","stu");
-
-        System.out.println("e44");
+        for(int i=0;i<500;i++){
+            new Thread(()->{
+                int num=userDao.getGoodNum(1);
+                userDao.decrementWarehouse(--num);
+            }).start();
+        }
     }
 
     @Test

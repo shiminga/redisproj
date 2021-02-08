@@ -9,5 +9,7 @@ import java.util.List;
 public interface UserDao {
     public List<User> getUsers();
 
-    public int decrementWarehouse(int decreNum);
+    public int decrementWarehouse(int newNum);
+
+    public int getGoodNum(int id);
 }
