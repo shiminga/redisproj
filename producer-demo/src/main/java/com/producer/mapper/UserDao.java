@@ -12,4 +12,5 @@ public interface UserDao {
     public int decrementWarehouse(int newNum);
 
     public int getGoodNum(int id);
+
 }

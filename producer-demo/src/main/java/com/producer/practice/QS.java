@@ -1,5 +1,7 @@
 package com.producer.practice;
 
+import java.util.Stack;
+
 public class QS {
 
     public static void main(String[] args) {
@@ -8,6 +10,8 @@ public class QS {
         System.out.println("23r3");
 
         maxTurbulenceSize(new int[]{4,12,8});
+
+        validateStackSequences(new int[]{1,2,3,4,5},new int[]{4,5,3,2,1});
     }
 
     public static void quickSort(int[] nums, int l,int r){
@@ -49,5 +53,28 @@ public class QS {
             lastState=state;
         }
         return max;
+    }
+
+    public static boolean validateStackSequences(int[] pushed, int[] popped) {
+
+        Stack<Integer> stack=new Stack<>();
+        int len=pushed.length;
+
+        int i=0,j=0;
+
+        while(i<len||j<len){
+            if(i<len&&(stack.isEmpty()||stack.peek()!=popped[j])){
+                stack.push(pushed[i++]);
+            }else{
+                if(stack.isEmpty()){break;}
+                if(stack.peek()==popped[j]){
+                    stack.pop();
+                    j++;
+                }else{
+                    break;
+                }
+            }
+        }
+        return stack.isEmpty()&&i==len-1&&j==len-1;
     }
 }

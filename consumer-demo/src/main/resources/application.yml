@@ -53,3 +53,5 @@ dubbo:
       protocol: zookeeper
   monitor:
     protocol: registry
+  consumer:
+    timeout: 3000
