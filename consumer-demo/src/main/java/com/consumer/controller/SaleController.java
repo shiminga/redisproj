@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SaleController {
 
-    @Reference(version = "1.0.1")
+    @Reference(version = "1.0.1",timeout = 41000)
     SaleService saleService;
 
     @GetMapping("/psale")

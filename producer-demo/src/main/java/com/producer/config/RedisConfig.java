@@ -27,6 +27,9 @@ public class RedisConfig {
         ClusterServersConfig clusterServersConfig = config.useClusterServers()
                 .addNodeAddress(clusterNodes.toArray(new String[clusterNodes.size()]));
         clusterServersConfig.setPassword(redisConfigProperties.getPassword());//设置密码
+
+        //设置看门狗的超时时间
+        config.setLockWatchdogTimeout(3000);
         return (Redisson) Redisson.create(config);
     }
 }

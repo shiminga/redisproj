@@ -55,3 +55,4 @@ dubbo:
     protocol: registry
   consumer:
     timeout: 3000
+    check: false
