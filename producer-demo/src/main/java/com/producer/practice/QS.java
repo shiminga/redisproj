@@ -1,17 +1,19 @@
 package com.producer.practice;
 
-import java.util.Stack;
+import java.util.*;
 
 public class QS {
 
     public static void main(String[] args) {
-            int[] nums={2,4,5,6,6,6,9,4,4,3,2,99,7,8};
-        quickSort(nums,0,nums.length-1);
-        System.out.println("23r3");
+//            int[] nums={2,4,5,6,6,6,9,4,4,3,2,99,7,8};
+//        quickSort(nums,0,nums.length-1);
+//        System.out.println("23r3");
+//
+//        maxTurbulenceSize(new int[]{4,12,8});
+//
+//        validateStackSequences(new int[]{1,2,3,4,5},new int[]{4,5,3,2,1});
 
-        maxTurbulenceSize(new int[]{4,12,8});
-
-        validateStackSequences(new int[]{1,2,3,4,5},new int[]{4,5,3,2,1});
+        longestSubarray(new int[]{88,10},10);
     }
 
     public static void quickSort(int[] nums, int l,int r){
@@ -76,5 +78,94 @@ public class QS {
             }
         }
         return stack.isEmpty()&&i==len-1&&j==len-1;
+    }
+
+    /**
+     * 给你一个整数数组 nums ，和一个表示限制的整数 limit，请你返回最长连续子数组的长度，该子数组中的任意两个元素之间的绝对差必须小于或者等于 limit 。
+     *
+     * 如果不存在满足条件的子数组，则返回 0 。
+     *
+     *  
+     *
+     * 示例 1：
+     *
+     * 输入：nums = [8,2,4,7], limit = 4
+     * 输出：2
+     * 解释：所有子数组如下：
+     * [8] 最大绝对差 |8-8| = 0 <= 4.
+     * [8,2] 最大绝对差 |8-2| = 6 > 4.
+     * [8,2,4] 最大绝对差 |8-2| = 6 > 4.
+     * [8,2,4,7] 最大绝对差 |8-2| = 6 > 4.
+     * [2] 最大绝对差 |2-2| = 0 <= 4.
+     * [2,4] 最大绝对差 |2-4| = 2 <= 4.
+     * [2,4,7] 最大绝对差 |2-7| = 5 > 4.
+     * [4] 最大绝对差 |4-4| = 0 <= 4.
+     * [4,7] 最大绝对差 |4-7| = 3 <= 4.
+     * [7] 最大绝对差 |7-7| = 0 <= 4.
+     * 因此，满足题意的最长子数组的长度为 2 。
+     * 示例 2：
+     *
+     * 输入：nums = [10,1,2,4,7,2], limit = 5
+     * 输出：4
+     * 解释：满足题意的最长子数组是 [2,4,7,2]，其最大绝对差 |2-7| = 5 <= 5 。
+     * 示例 3：
+     *
+     * 输入：nums = [4,2,2,2,4,4,2,2], limit = 0
+     * 输出：3
+     *  
+     *
+     * 提示：
+     *
+     * 1 <= nums.length <= 10^5
+     * 1 <= nums[i] <= 10^9
+     * 0 <= limit <= 10^9
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param nums
+     * @param limit
+     * @return
+     */
+    public static int longestSubarray(int[] nums, int limit) {
+        if(nums.length==1){return 1;}
+
+        int left=0,right=1,maxLen=0;
+
+        PriorityQueue<Integer> maxQueue=new PriorityQueue<>(new Comparator<Integer>(){
+            @Override
+            public int compare(Integer i1,Integer i2){
+                return i2.compareTo(i1);
+            }
+        });
+        PriorityQueue<Integer> minQueue=new PriorityQueue<>();
+
+        maxQueue.add(nums[left]);
+        maxQueue.add(nums[right]);
+        minQueue.add(nums[left]);
+        minQueue.add(nums[right]);
+
+        do{
+            if(right==left){
+                if(++right>nums.length-1){
+                    continue;
+                }
+                maxQueue.add(nums[right]);
+                minQueue.add(nums[right]);
+            }
+
+            if(maxQueue.peek()-minQueue.peek()<=limit){
+                maxLen=Math.max(maxLen,right-left+1);
+
+                if(++right>nums.length-1){continue;}
+                maxQueue.add(nums[right]);
+                minQueue.add(nums[right]);
+            }else{
+                maxQueue.remove(nums[left]);
+                minQueue.remove(nums[left++]);
+            }
+        }while(right<nums.length);
+
+        return maxLen;
     }
 }
