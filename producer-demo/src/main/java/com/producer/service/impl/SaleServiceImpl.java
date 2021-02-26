@@ -7,16 +7,42 @@ import com.api.util.DistributedLock;
 import com.producer.mapper.UserDao;
 import org.redisson.Redisson;
 import org.redisson.api.RLock;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import reactor.core.Disposable;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
 @Service(version = "1.0.1")
-public class SaleServiceImpl implements SaleService {
+public class SaleServiceImpl implements SaleService,
+        BeanFactoryPostProcessor,
+        BeanNameAware,
+        BeanFactoryAware,
+        ApplicationContextAware,
+        BeanPostProcessor,
+        InitializingBean,
+        Disposable {
 
     @Autowired
     Redisson redisson;
@@ -26,6 +52,8 @@ public class SaleServiceImpl implements SaleService {
 
     @Value("${dubbo.registry.address}")
     String config;
+
+    List<String> cache=new ArrayList<>();
 
     @Override
     public int sale(int saleNum) {
@@ -78,5 +106,65 @@ public class SaleServiceImpl implements SaleService {
             lock.unlock();
         }
         return 1;
+    }
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        cache.add("****************bean lifecycle beanfactorypostprocessor:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        cache.add("****************bean lifecycle beanFactoryAware:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+        cache.add(beanFactory.toString());
+    }
+
+    @Override
+    public void setBeanName(String name) {
+        cache.add("****************bean lifecycle beanNameAware:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+        cache.add(name);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        cache.add("****************bean lifecycle applicationContextAware:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+        cache.add(applicationContext.toString());
+    }
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        cache.add("****************bean lifecycle postProcessBeforeInitialization:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        cache.add("****************bean lifecycle postProcessAfterInitialization:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+        return bean;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        cache.add("****************bean lifecycle afterPropertiesSet:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+    }
+
+    @PostConstruct //==xml的  init-method
+    public void postConstruct(){
+        cache.add("****************bean lifecycle postConstruct:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+    }
+
+    @PreDestroy  //==xml的 destroy-method
+    public void preDestroy(){
+        cache.add("****************bean lifecycle preDestroy:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+    }
+
+    @Override
+    public void dispose() {
+        cache.add("****************bean lifecycle dispose:"+(redisson==null?"未初始化":"已初始化")+"*****************");
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return false;
     }
 }
