@@ -53,6 +53,7 @@ dubbo:
     protocol: registry
   provider:
     timeout: 2000
+    filter: providorFilter
 #  provider:
 #    client: zkclient
 

@@ -4,8 +4,11 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.dubbo.remoting.exchange.support.DefaultFuture;
 import com.api.service.SaleService;
 import com.api.util.DistributedLock;
+import com.api.util.HttpContext;
+import com.google.common.util.concurrent.RateLimiter;
 import com.producer.mapper.UserDao;
 import org.redisson.Redisson;
+import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -57,6 +60,7 @@ public class SaleServiceImpl implements SaleService,
 
     @Override
     public int sale(int saleNum) {
+        System.out.println("拿到的sessionid是:"+HttpContext.getSessionid());
         return zookeeperLock();
     }
 
@@ -92,6 +96,8 @@ public class SaleServiceImpl implements SaleService,
     public int redissionLock(){
         String keyName="sale20210209001";
         RLock lock =redisson.getLock(keyName);
+
+        RedissonRedLock redissonRedLock=new RedissonRedLock(lock);
         try {
             boolean success=lock.tryLock(1,-1,TimeUnit.SECONDS);
             if(success){
