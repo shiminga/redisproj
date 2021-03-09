@@ -5,15 +5,21 @@ import java.util.*;
 public class QS {
 
     public static void main(String[] args) {
-//            int[] nums={2,4,5,6,6,6,9,4,4,3,2,99,7,8};
-//        quickSort(nums,0,nums.length-1);
-//        System.out.println("23r3");
-//
-//        maxTurbulenceSize(new int[]{4,12,8});
-//
-//        validateStackSequences(new int[]{1,2,3,4,5},new int[]{4,5,3,2,1});
+        Node root=new Node(4,new Node(2,new Node(1),new Node(3)),new Node(5));
+        root=new Node(1);
 
-        longestSubarray(new int[]{88,10},10);
+        Node dd=treeToDoublyList(root);
+
+        System.out.println(dd);
+
+//        long startTime=System.currentTimeMillis();
+//        int i=0;
+//        while(i<(1<<31-1)){
+//            System.out.println(findNthDigit(i++));
+//        }
+//        System.out.println(System.currentTimeMillis()-startTime+"ms");
+
+        System.out.println(findNthDigit(2000000000));
     }
 
     public static void quickSort(int[] nums, int l,int r){
@@ -167,5 +173,124 @@ public class QS {
         }while(right<nums.length);
 
         return maxLen;
+    }
+
+    /**
+     * 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。
+
+     * 为了让您更好地理解问题，以下面的二叉搜索树为例：
+
+     * 我们希望将这个二叉搜索树转化为双向循环链表。链表中的每个节点都有一个前驱和后继指针。对于双向循环链表，第一个节点的前驱是最后一个节点，最后一个节点的后继是第一个节点。
+     *
+     * 下图展示了上面的二叉搜索树转化成的链表。“head” 表示指向链表中有最小元素的节点。
+
+     * 特别地，我们希望可以就地完成转换操作。当转化完成以后，树中节点的左指针需要指向前驱，树中节点的右指针需要指向后继。还需要返回链表中的第一个节点的指针。
+     *
+     *  
+     *
+     * 注意：本题与主站 426 题相同：
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     */
+    static LinkedList<Node> preOrderList=new LinkedList<>();
+    public static Node treeToDoublyList(Node root) {
+        if(root==null){return null;}
+        preOrder(root);
+
+        Node head=preOrderList.poll(),next=preOrderList.poll(),node=head;
+        while(node!=null){
+            if(next==null){break;}
+
+            node.right=next;
+            next.left=node;
+
+            node=next;
+            next=preOrderList.poll();
+        }
+        if(head!=node){
+            node.right=head;
+            head.left=node;
+        }
+
+        return head;
+    }
+
+    public static void preOrder(Node root){
+        if(root==null){
+            return ;
+        }
+        preOrder(root.left);
+        preOrderList.add(root);
+        preOrder(root.right);
+    }
+    static class Node {
+        public int val;
+        public Node left;
+        public Node right;
+
+        public Node() {}
+
+        public Node(int _val) {
+            val = _val;
+        }
+
+        public Node(int _val,Node _left,Node _right) {
+            val = _val;
+            left = _left;
+            right = _right;
+        }
+    };
+
+    /**
+     * 数字以0123456789101112131415…的格式序列化到一个字符序列中。在这个序列中，第5位（从下标0开始计数）是5，第13位是1，第19位是4，等等。
+     *
+     * 请写一个函数，求任意第n位对应的数字。
+     * 示例 1：
+     *
+     * 输入：n = 3
+     * 输出：3
+     * 示例 2：
+     *
+     * 输入：n = 11
+     * 输出：0
+     * 限制：
+     * 0 <= n < 2^31
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param n
+     * @return
+     */
+    public static int findNthDigit(int n) {
+        if(n==0){return 0;}
+        int p=1,seg=(int)(9*Math.pow(10,p-1)*p);
+        while(n>seg){
+            n-=seg;
+            p++;
+            seg=(int)(9*Math.pow(10,p-1)*p);
+        }
+        int mod=n%p;//该数中第mod位数字
+        n=(n+p-1)/p+(int)Math.pow(10,p-1)-1;//该组的第n个数
+        if(mod==0){
+            return n%10;
+        }else{
+            return (int)(n/Math.pow(10,p-mod))%10;
+        }
+    }
+
+    public static int findNthDigit2(int n) {
+        int digit = 1;
+        long start = 1;
+        long count = 9;
+        while (n > count) { // 1.
+            n -= count;
+            digit += 1;
+            start *= 10;
+            count = digit * start * 9;
+        }
+        long num = start + (n - 1) / digit; // 2.
+        return Long.toString(num).charAt((n - 1) % digit) - '0'; // 3.
     }
 }
