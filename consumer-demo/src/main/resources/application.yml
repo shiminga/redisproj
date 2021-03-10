@@ -52,7 +52,8 @@ dubbo:
       address: 8.129.178.38:2181,8.129.178.38:2182,8.129.178.38:2183
       protocol: zookeeper
   monitor:
-    protocol: registry
+#    protocol: registry
+    address: 8.129.178.38:7070
   consumer:
     timeout: 3000
     check: false

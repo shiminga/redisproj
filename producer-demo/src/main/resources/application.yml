@@ -50,7 +50,8 @@ dubbo:
   scan: com.producer.service
   #连接监控中心
   monitor:
-    protocol: registry
+#    protocol: registry
+    address: 8.129.178.38:7070
   provider:
     timeout: 2000
     filter: providorFilter

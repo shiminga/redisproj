@@ -62,7 +62,7 @@ public class SaleServiceImpl implements SaleService,
     @Override
     public int sale(int saleNum) {
         System.out.println("拿到的sessionid是:"+RpcContext.getContext().getAttachment("sessionid"));
-        return zookeeperLock();
+        return 1;
     }
 
     /**
