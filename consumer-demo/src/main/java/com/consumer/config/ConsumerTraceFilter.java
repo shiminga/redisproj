@@ -16,7 +16,7 @@ public class ConsumerTraceFilter implements com.alibaba.dubbo.rpc.Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         RpcInvocation rpcInvocation=(RpcInvocation)invocation;
-        rpcInvocation.setAttachment("sessionid",HttpContext.getSessionid());
+        rpcInvocation.setAttachment("sessionid",RpcContext.getContext().getAttachment("sessionid"));
         return invoker.invoke(invocation);
     }
 }

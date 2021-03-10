@@ -14,7 +14,7 @@ public class ProducerTraceFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        HttpContext.setSessionid(invocation.getAttachment("sessionid"));
+        RpcContext.getContext().setAttachment("sessionid",invocation.getAttachment("sessionid"));
         return invoker.invoke(invocation);
     }
 }

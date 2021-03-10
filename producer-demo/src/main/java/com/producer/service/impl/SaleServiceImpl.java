@@ -2,6 +2,7 @@ package com.producer.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.dubbo.remoting.exchange.support.DefaultFuture;
+import com.alibaba.dubbo.rpc.RpcContext;
 import com.api.service.SaleService;
 import com.api.util.DistributedLock;
 import com.api.util.HttpContext;
@@ -60,7 +61,7 @@ public class SaleServiceImpl implements SaleService,
 
     @Override
     public int sale(int saleNum) {
-        System.out.println("拿到的sessionid是:"+HttpContext.getSessionid());
+        System.out.println("拿到的sessionid是:"+RpcContext.getContext().getAttachment("sessionid"));
         return zookeeperLock();
     }
 

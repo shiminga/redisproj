@@ -1,5 +1,6 @@
 package com.consumer.config;
 
+import com.alibaba.dubbo.rpc.RpcContext;
 import com.api.util.HttpContext;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,12 +12,12 @@ public class Intecepter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        HttpContext.setSessionid(request.getParameter("sessionid"));
+        RpcContext.getContext().setAttachment("sessionid",request.getParameter("sessionid"));
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        HttpContext.removeSessionid();
+        RpcContext.getContext().removeAttachment("sessionid");
     }
 }
