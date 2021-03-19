@@ -19,7 +19,9 @@ public class QS {
 //        }
 //        System.out.println(System.currentTimeMillis()-startTime+"ms");
 
-        System.out.println(findNthDigit(2000000000));
+//        System.out.println(findNthDigit(2000000000));
+
+        spiralOrder(new int[][]{{1,2,3},{4,5,6},{7,8,9}});
     }
 
     public static void quickSort(int[] nums, int l,int r){
@@ -292,5 +294,49 @@ public class QS {
         }
         long num = start + (n - 1) / digit; // 2.
         return Long.toString(num).charAt((n - 1) % digit) - '0'; // 3.
+    }
+
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        int row=matrix.length,col=matrix[0].length;
+
+        List<Integer> res=new ArrayList<>();
+        boolean[][] used=new boolean[row][col];
+
+        int len=row*col,i=0,x=0,y=0,direct=1;
+        while(res.size()<len){
+            res.add(matrix[x][y]);
+            used[x][y]=true;
+            switch(direct){
+                case 1:
+                    if(x+1<col&&!used[x+1][y]){
+                        ++x;
+                    }else{
+                        direct=2;y++;
+                    }
+                    break;
+                case 2:
+                    if(y+1<row&&!used[x][y+1]){
+                        ++y;
+                    }else{
+                        direct=3;x--;
+                    }
+                    break;
+                case 3:
+                    if(x-1>=0&&!used[x-1][y]){
+                        --x;
+                    }else{
+                        direct=4;y--;
+                    }
+                    break;
+                case 4:
+                    if(y-1>=0&&!used[x][y-1]){
+                        --y;
+                    }else{
+                        direct=1;x++;
+                    }
+                    break;
+            }
+        }
+        return res;
     }
 }

@@ -34,15 +34,24 @@ spring:
         initial-size: 5     #初始化提供的连接数
         max-total: 5          #最大的连接数
         max-wait-millis: 200        #等待连接获取的最大超时时间
+
 #调整端点的前缀路径为/
-
   management:
-
       endpoints:
-
          web:
-
             base-path: /
+
+# kafka consumer
+  kafka:
+    consumer:
+      bootstrap-servers: 10.1.1.42:9092,10.1.1.52:9092,10.1.1.52:9093
+      group-id: erp-gateway
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      auto-commit-interval: 100ms
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      isolation-level: read_committed
 
 # dubbo consumer config
 dubbo:

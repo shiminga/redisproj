@@ -33,7 +33,19 @@ spring:
         min-idle: 5         #数据库连接池的最小维持连接数
         initial-size: 5     #初始化提供的连接数
         max-total: 5          #最大的连接数
-        max-wait-millis: 200        #等待连接获取的最大超时时间
+        max-wait-millis: 200
+# kafka producer
+  kafka:
+    producer:
+      bootstrap-servers: 10.1.1.42:9092,10.1.1.52:9092,10.1.1.52:9093
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+kafka:
+  topic: distribute_trans
 
 # dubbo producer config
 dubbo:
@@ -61,3 +73,4 @@ dubbo:
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.producer.entities
+
