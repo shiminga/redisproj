@@ -13,7 +13,8 @@ public class QS {
 //
 //        validateStackSequences(new int[]{1,2,3,4,5},new int[]{4,5,3,2,1});
 
-        longestSubarray(new int[]{88,10},10);
+//        longestSubarray(new int[]{88,10},10);
+        reverseBetween(new ListNode(3,new ListNode(5,null)),2,4);
     }
 
     public static void quickSort(int[] nums, int l,int r){
@@ -168,4 +169,44 @@ public class QS {
 
         return maxLen;
     }
+
+    public static ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode node=head,pre=null,leftNode=null,rightNode=null,next=null;
+
+        while(node!=null){
+            if(node.val==left){leftNode=node;}
+            if(node.val==right){rightNode=node;next=node.next;}
+            if(leftNode==null){pre=node;}
+            node=node.next;
+        }
+
+        if(leftNode==null){return head;}
+
+        reverse(leftNode,rightNode);
+        pre.next=rightNode;
+        leftNode.next=next;
+        return head==leftNode?rightNode:head;
+    }
+
+    public static ListNode reverse(ListNode head,ListNode rightNode){
+        ListNode pre=null,cur=head,next=null;
+
+        while(cur!=null){
+            next=cur.next;
+
+            cur.next=pre;
+            if(cur==rightNode){return cur;}
+            pre=cur;
+            cur=next;
+        }
+        return pre;
+    }
+
+    public static class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ }
 }
