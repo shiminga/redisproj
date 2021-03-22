@@ -21,4 +21,9 @@ public class SaleController {
         int num= saleService.sale(1);
         return num==0?"您来慢了，已经被抢完了":"恭喜您，抢到了！";
     }
+
+
+    public static void main(String[] args) {
+        System.out.println(SaleController.class.getTypeName());
+    }
 }

@@ -8,10 +8,12 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class KafkaConsumer {
     Logger log=LoggerFactory.getLogger(KafkaConsumer.class);
+    private static AtomicInteger count=new AtomicInteger(0);
 
     @KafkaListener(topics = {"distribute_trans"},containerFactory = "kafkaListenerContainerFactory")
     public void listen(List<ConsumerRecord> consumerRecords, Acknowledgment ack){
@@ -20,7 +22,8 @@ public class KafkaConsumer {
         try {
             for(ConsumerRecord consumerRecord:consumerRecords){
                 System.out.println("收到消息："+consumerRecord);
-                if(offset==1){throw new RuntimeException();}
+                count.incrementAndGet();
+                System.out.println("消费完:"+Thread.currentThread().getName()+","+count.intValue());
                 offset++;
             }
         }catch (Exception e){

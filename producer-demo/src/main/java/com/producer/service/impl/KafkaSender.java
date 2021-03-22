@@ -12,6 +12,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.SuccessCallback;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class KafkaSender {
@@ -23,6 +24,8 @@ public class KafkaSender {
 
     @Autowired
     ConfigProperties configProperties;
+
+    private static AtomicInteger count=new AtomicInteger(0);
 
     @Transactional(transactionManager = "kafkaTransactionManager",rollbackFor = Exception.class)
     public void send(String msg) throws ExecutionException, InterruptedException {
@@ -37,9 +40,8 @@ public class KafkaSender {
          * 同步投递
          */
         Object o = kafkaTemplate.send(configProperties.getTopic(), msg);
-        System.out.println("投递结果"+o);
-        Thread.sleep(500);
-        throw new RuntimeException();
+        count.incrementAndGet();
+        System.out.println("投递结果"+this+Thread.currentThread().getName()+","+count.intValue());
 
         /**
          * 异步投递
