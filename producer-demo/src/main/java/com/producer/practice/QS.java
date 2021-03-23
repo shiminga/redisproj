@@ -21,7 +21,12 @@ public class QS {
 
 //        System.out.println(findNthDigit(2000000000));
 
-        spiralOrder(new int[][]{{1,2,3},{4,5,6},{7,8,9}});
+//        spiralOrder();
+
+        int[][] arr=new int[][]{{1,2,3},{4,5,6},{7,8,9}};
+        System.out.println("instance of"+(arr instanceof int[][]));
+
+        System.out.println(oneEditAway("baaa","b"));
     }
 
     public static void quickSort(int[] nums, int l,int r){
@@ -339,4 +344,36 @@ public class QS {
         }
         return res;
     }
+
+    public static boolean oneEditAway(String first, String second) {
+        return oneEdit(first,second,2);
+    }
+
+    public static boolean oneEdit(String first, String second,int threshold){
+        if(first==null||second==null||first.length()-second.length()>threshold){
+            return false;
+        }
+
+        if(first.length()<second.length()){
+            String tmp=first;
+            first=second;
+            second=tmp;
+        }
+
+        int index1=0,index2=0;
+        while(index1<first.length()&&index2<second.length()){
+            while(index1<first.length()&&first.charAt(index1)!=second.charAt(index2)){
+                index1++;
+                if(index1-index2>threshold){
+                    System.out.println(index1-index2);
+                    return false;
+                }
+            }
+            index1++;
+            index2++;
+        }
+        System.out.println(index1-index2);
+        return index2+threshold>=first.length()||(index1==first.length()&&index2==second.length());
+    }
+
 }
