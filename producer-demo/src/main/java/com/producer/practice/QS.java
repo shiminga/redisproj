@@ -26,6 +26,10 @@ public class QS {
 //        spiralOrder();
 
         int[][] arr=new int[][]{{1,2,3},{4,5,6},{7,8,9}};
+        System.out.println(arr instanceof int[][]);
+//        spiralOrder();
+
+        int[][] arr=new int[][]{{1,2,3},{4,5,6},{7,8,9}};
         System.out.println("instance of"+(arr instanceof int[][]));
 
         System.out.println(oneEditAway("baaa","b"));
@@ -348,6 +352,36 @@ public class QS {
             }
         }
         return res;
+    }
+
+    public boolean oneEditAway(String first, String second) {
+        return oneEdit(first,second,1);
+    }
+
+    public boolean oneEdit(String first, String second,int threshold){
+        if(first==null||second==null||first.length()-second.length()>threshold){
+            return false;
+        }
+
+        if(first.length()<second.length()){
+            swap(first,second);
+        }
+
+        int index=0,skip=0;
+        while(index<second.length()){
+            while(index<second.length()&&first.charAt(index+skip)!=second.charAt(index)){
+                skip++;
+                if(skip>threshold){return false;}
+            }
+            index++;
+        }
+        return true;
+    }
+
+    void swap(String first, String second){
+        String tmp=first;
+        first=second;
+        second=tmp;
     }
 
     public static ListNode reverseBetween(ListNode head, int left, int right) {
