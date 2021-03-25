@@ -1,19 +1,15 @@
 package com.producer;
 
 import com.producer.mapper.UserDao;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.Serializable;
 
-@SpringBootTest
 class ProducerApplicationTests {
 
     @Autowired
     UserDao userDao;
 //
-    @Test
     void contextLoads() {
 
         for(int i=0;i<500;i++){
@@ -24,14 +20,12 @@ class ProducerApplicationTests {
         }
     }
 
-    @Test
     void contextLoads2() {
 
         System.out.println(2147364747/1024/1024);
 
     }
 
-    @Test
     void contextLoads3(){
         String str="create table 'payment' ( 'id' bigint(20) not null auto_increment comment 'ID', 'serial' varchar(200) default '', primary key('id') ) engine=innodb auto_i_increment=1 default charset=utf8;";
 

@@ -1,5 +1,6 @@
 package com.nacos.discovery.consumer.controller;
 
+import com.discovery.api.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -8,8 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
+
 @RestController
 public class EchoController {
+
+    @Resource
+    HelloService helloService;
 
     @Bean
     @LoadBalanced
@@ -22,6 +28,6 @@ public class EchoController {
 
     @GetMapping("/echo/{str}")
     public String echo(@PathVariable("str")String str){
-        return "echo echo echo "+restTemplate.getForObject("http://service-provider/say/"+str,String.class);
+        return "echo echo echo "+helloService.sayHello(str);
     }
 }

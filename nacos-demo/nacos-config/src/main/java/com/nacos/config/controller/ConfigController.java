@@ -17,7 +17,7 @@ public class ConfigController {
     @Value(value = "${myName:ming}")
     private String myName;
     /**
-     * http://localhost:8080/config/get
+     * http://10.1.22.20:8080/config/get
      */
     @RequestMapping("/get")
     public String get() {

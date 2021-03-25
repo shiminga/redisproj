@@ -43,6 +43,13 @@
             <artifactId>hibernate-validator</artifactId>
             <version>5.1.0.Final</version>
         </dependency>
+
+        <!--api接口依赖-->
+        <dependency>
+            <groupId>com.nacos.discovery</groupId>
+            <artifactId>api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
