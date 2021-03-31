@@ -1,4 +1,4 @@
-package com.discovery.api;
+package com.nacos.discovery.consumer.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Component
-@FeignClient(name = "hello-service")
+@FeignClient(name = "service-provider")
 public interface HelloService {
 
     @GetMapping("/say/{id}")

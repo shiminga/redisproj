@@ -1,6 +1,6 @@
 package com.nacos.discovery.consumer.controller;
 
-import com.discovery.api.HelloService;
+import com.nacos.discovery.consumer.api.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
