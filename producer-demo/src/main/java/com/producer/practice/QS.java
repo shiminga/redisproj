@@ -3,16 +3,17 @@ package com.producer.practice;
 import jdk.nashorn.internal.ir.ReturnNode;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class QS {
 
     public static void main(String[] args) {
-        Node root=new Node(4,new Node(2,new Node(1),new Node(3)),new Node(5));
-        root=new Node(1);
-
-        Node dd=treeToDoublyList(root);
-
-        System.out.println(dd);
+//        Node root=new Node(4,new Node(2,new Node(1),new Node(3)),new Node(5));
+//        root=new Node(1);
+//
+//        Node dd=treeToDoublyList(root);
+//
+//        System.out.println(dd);
 
 //        long startTime=System.currentTimeMillis();
 //        int i=0;
@@ -32,9 +33,95 @@ public class QS {
 //        spiralOrder(new int[][]{{1,2,3},{4,5,6},{7,8,9}});
 ////        longestSubarray(new int[]{88,10},10);
 //        reverseBetween(new ListNode(3,new ListNode(5,null)),2,4);
-int[][] nums={{0,1,0,0,1,1,0},{1,0,0,0,0,0,0},{1,0,0,1,1,1,1},{0,1,0,0,0,0,0},{1,0,0,0,0,0,1},{1,0,0,1,0,0,0},{1,0,1,0,0,1,0}};
-nums=new int[][]{{0,1,0},{1,1,0},{0,0,0}};
-        System.out.println(shortestPathBinaryMatrix2(nums));
+//        int[][] nums=new int[][]{{0,1,0},{1,1,0},{0,0,0}};
+//        System.out.println(shortestPathBinaryMatrix2(nums));
+
+
+//        clumsy(9);
+//        Integer[] nums={10,5,-3,3,2,null,11,3,-2,null,1};
+//        RemoveDuplicates.TreeNode r=new RemoveDuplicates.TreeNode(nums[0]);
+//        buildTree(nums,0,r);
+//
+//        pathSum(r,0);
+//        System.out.println(res);
+
+        int[] nums=new int[200];
+        for(int i=1;i<=200;i++){
+            nums[i-1]=i;
+        }
+        nums=new int[]{2,1,3};
+
+        combinationSum4(nums,35);
+    }
+
+    /**
+     * 组合问题公式
+     *
+     *
+     * dp[i] += dp[i-num]
+     * True、False问题公式
+     *
+     *
+     * dp[i] = dp[i] or dp[i-num]
+     * 最大最小问题公式
+     *
+     *
+     * dp[i] = min(dp[i], dp[i-num]+1)或者dp[i] = max(dp[i], dp[i-num]+1)
+     * 以上三组公式是解决对应问题的核心公式。
+     *
+     * 当然拿到问题后，需要做到以下几个步骤：
+     * 1.分析是否为背包问题。
+     * 2.是以上三种背包问题中的哪一种。
+     * 3.是0-1背包问题还是完全背包问题。也就是题目给的nums数组中的元素是否可以重复使用。
+     * 4.如果是组合问题，是否需要考虑元素之间的顺序。需要考虑顺序有顺序的解法，不需要考虑顺序又有对应的解法。
+     *
+     * 接下来讲一下背包问题的判定
+     * 背包问题具备的特征：给定一个target，target可以是数字也可以是字符串，再给定一个数组nums，nums中装的可能是数字，也可能是字符串，问：能否使用nums中的元素做各种排列组合得到target。
+     *
+     * 背包问题技巧：
+     * 1.如果是0-1背包，即数组中的元素不可重复使用，nums放在外循环，target在内循环，且内循环倒序；
+     *
+     *
+     * for num in nums:
+     *     for i in range(target, nums-1, -1):
+     * 2.如果是完全背包，即数组中的元素可重复使用，nums放在外循环，target在内循环。且内循环正序。
+     *
+     *
+     * for num in nums:
+     *     for i in range(nums, target+1):
+     * 3.如果组合问题需考虑元素之间的顺序，需将target放在外循环，将nums放在内循环。
+     *
+     *
+     * for i in range(1, target+1):
+     *     for num in nums:
+     *
+     * 作者：Jackie1995
+     * 链接：https://leetcode-cn.com/problems/combination-sum-iv/solution/xi-wang-yong-yi-chong-gui-lu-gao-ding-bei-bao-wen-/
+     * 来源：力扣（LeetCode）
+     * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+     * @param nums
+     * @param target
+     * @return
+     */
+    static int[] ans;
+    public static int combinationSum4(int[] nums, int target) {
+        Arrays.sort(nums);
+        ans=new int[target+1];
+        Arrays.fill(ans,-1);
+        ans[0]=1;
+        return helper(nums,target);
+    }
+
+    public static int helper(int[] nums, int target){
+        if(ans[target]==-1){
+            int res=0;
+            for(int i=0;i<nums.length;i++){
+                if(target<nums[i]){break;}
+                res+=helper(nums,target-nums[i]);
+            }
+            ans[target]=res;
+        }
+        return ans[target];
     }
 
     public static void quickSort(int[] nums, int l,int r){
@@ -70,7 +157,7 @@ nums=new int[][]{{0,1,0},{1,1,0},{0,0,0}};
             if((i==0&&state!=2)||state+lastState==5){
                 count++;
             }else{
-                count=state==2?0:1;;
+                count=state==2?0:1;
             }
             max=Math.max(max,count+1);
             lastState=state;
@@ -626,34 +713,63 @@ nums=new int[][]{{0,1,0},{1,1,0},{0,0,0}};
         return x >= 0 && x < row && y >= 0 && y < col;
     }
 
-//    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-//
-//        int M=grid.size(),N=grid[0].size();
-//        if(grid[0][0]==1||grid[M-1][N-1]==1)return -1;
-//        queue<vector<int>>que;
-//        que.push({0,0});
-//        vector<vector<int>>dir={{0,1},{0,-1},{1,0},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
-//        int res=1;
-//        while(!que.empty()){
-//            int size=que.size();
-//            for(int i=0;i<size;++i){
-//                auto cur=que.front();
-//                int x=cur[0];
-//                int y=cur[1];
-//                que.pop();
-//                if(x==M-1&&y==N-1)return res;
-//                for(vector<int>& d:dir){
-//                    int nx=x+d[0];
-//                    int ny=y+d[1];
-//                    if(nx<0||nx>=M||ny<0||ny>=N||grid[nx][ny]==1)continue;
-//
-//                    grid[nx][ny]=1;
-//                    que.push({nx,ny});
-//                }
-//            }
-//            res++;
-//        }
-//        return -1;
-//
-//    }
+    public static int clumsy(int N) {
+        int res=0,ans=0;
+        boolean flag=false;
+
+        if(N>=4){
+            res=(N--)*(N--)/(N--)+(N--);
+            flag=true;
+        }
+        while(N>=4){
+            res-=(N--)*(N--)/(N--);
+            res+=N--;
+        }
+
+        if(N>=1){
+            ans=N--;
+        }
+        if(N>=1){
+            ans*=N--;
+        }
+        if(N>=1){
+            ans/=N--;
+        }
+        return flag?(res-ans):ans;
+    }
+
+
+    static Map<Integer,Integer> count=new HashMap<>();
+    public static int pathSum(RemoveDuplicates.TreeNode root, int sum) {
+        res=0;
+        if(root==null){return 0;}
+
+        helper(root,0,sum);
+        return res;
+    }
+
+    public static void helper(RemoveDuplicates.TreeNode root,int pathSum, int sum){
+        if(root==null){return ;}
+        int newSum=pathSum+root.val;
+
+        res+=count.getOrDefault(newSum-sum,0);
+        count.put(newSum,count.getOrDefault(newSum,0)+1);
+
+        helper(root.left,newSum,sum);
+        helper(root.right,newSum,sum);
+
+        count.put(newSum,count.getOrDefault(newSum,0)-1);
+    }
+
+    static void buildTree(Integer[] nums,int index,RemoveDuplicates.TreeNode parent){
+        if(2*index+1<nums.length&&nums[2*index+1]!=null){
+            parent.left=new RemoveDuplicates.TreeNode(nums[2*index+1]);
+            buildTree(nums,2*index+1,parent.left);
+        }
+
+        if(2*index+2<nums.length&&nums[2*index+2]!=null){
+            parent.right=new RemoveDuplicates.TreeNode(nums[2*index+2]);
+            buildTree(nums,2*index+2,parent.right);
+        }
+    }
 }
